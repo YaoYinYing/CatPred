@@ -38,7 +38,7 @@ RUN conda install -y --channel=conda-forge --channel=pyg --channel=pytorch --cha
 
 RUN pip install -U --no-cache-dir \
     awscli==1.36.23 \
-    fair-esm==2.0.0 \
+    git+https://github.com/YaoYinYing/esm2.git#egg=fair-esm2 \
     matplotlib==3.10.0 \
     numpy==2.2.0 \
     pandas \

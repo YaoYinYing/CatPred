@@ -3,10 +3,12 @@ import os
 import re
 from pathlib import Path
 from functools import partial
-import esm
+# The ESM models are provided by the `fair-esm2` package under the module name
+# ``esm2`` to avoid potential conflicts with future versions of Facebook's ESM.
+import esm2
+from esm2 import inverse_folding as esm_if
 from torch.nn.utils.rnn import pad_sequence
 from catpred.data.cache_utils import cache_fn, run_once, md5_hash_fn
-# import esm.inverse_folding as esm_if
 
 def exists(val):
     return val is not None
@@ -101,7 +103,7 @@ def tensor_to_aa_str(t):
 
 @run_once('init_esm')
 def init_esm(device: torch.device) -> None:
-    model, alphabet = esm.pretrained.esm2_t33_650M_UR50D()
+    model, alphabet = esm2.pretrained.esm2_t33_650M_UR50D()
     batch_converter = alphabet.get_batch_converter()
     model = model.to(device)
     GLOBAL_VARIABLES['model'] = (model, batch_converter)
@@ -109,7 +111,7 @@ def init_esm(device: torch.device) -> None:
 
 @run_once('init_esm_if')
 def init_esm_if(device: torch.device) -> None:
-    model, alphabet = esm.pretrained.esm_if1_gvp4_t16_142M_UR50()
+    model, alphabet = esm2.pretrained.esm_if1_gvp4_t16_142M_UR50()
     batch_converter = esm_if.util.CoordBatchConverter(alphabet, 2048)
     model = model.to(device)
     GLOBAL_VARIABLES['esmif_model'] = (model, batch_converter)

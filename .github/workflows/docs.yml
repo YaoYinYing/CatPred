@@ -16,6 +16,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.x"
+      - name: Install torch
+        run: pip install torch --index-url https://download.pytorch.org/whl/cpu
       - name: Install
         run: pip install .[docs]
       - name: Build docs
