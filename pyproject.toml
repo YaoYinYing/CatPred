@@ -32,7 +32,7 @@ dependencies = [
     "typing-extensions",
     "rotary-embedding-torch",
     "einops",
-    "fair-esm2 @ git+https://github.com/YaoYinYing/esm2.git@codex/migrate-deprecated-biotite-api-calls#egg=fair-esm2",
+    "fair-esm2 @ git+https://github.com/YaoYinYing/esm2.git#egg=fair-esm2",
     "descriptastorus",
     "torch-geometric",
     "torch-scatter",
