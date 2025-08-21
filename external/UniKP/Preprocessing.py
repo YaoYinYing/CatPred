@@ -3,7 +3,6 @@ import numpy as np
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 from sklearn.metrics import r2_score
 from scipy.stats import pearsonr
-import ipdb
 
 res = np.array(pd.read_csv('catpred_kcat/all_samples_catpredSplits.csv')).T
 sequence = res[1]
