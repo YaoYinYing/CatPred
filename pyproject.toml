@@ -1,0 +1,59 @@
+[build-system]
+requires = ["flit_core >=2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "catpred"
+version = "0.0.0"
+description = "Framework for deep learning of enzyme kinetic parameters"
+authors = [{name = "CatPred Developers"}]
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "matplotlib",
+    "numpy",
+    "pandas",
+    "pandas-flavor",
+    "scikit-learn",
+    "tensorboardX",
+    "torch<=2.3.0",
+    "tqdm",
+    "typed-argument-parser",
+    "rdkit",
+    "scipy",
+    "packaging",
+    "typing-extensions",
+    "rotary-embedding-torch",
+    "einops",
+    "fair-esm2 @ git+https://github.com/YaoYinYing/esm2.git#egg=fair-esm2",
+    "descriptastorus",
+    "torch-geometric",
+    "torch-scatter",
+    "torch-cluster",
+    "progres",
+    "rdkit",
+    "transformers",
+    "descriptastorus",
+    "sentencepiece",
+    "seaborn",
+    "typed-argument-parser>=1.6.1",
+    "faiss-cpu",
+    "biotite",
+]
+
+[project.optional-dependencies]
+test = ["pytest", "pytest-xdist", "pytest-cov"]
+docs = ["sphinx", "furo", "myst-parser", "sphinx-autodoc-typehints"]
+
+[project.urls]
+Homepage = "https://github.com/maranasgroup/catpred"
+
+[project.scripts]
+catpred_predict = "catpred.train:catpred_predict"
