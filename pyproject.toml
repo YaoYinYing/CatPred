@@ -38,7 +38,7 @@ dependencies = [
     "torch-scatter",
     "torch-cluster",
     "progres",
-    "rdkit-pypi",
+    "rdkit",
     "transformers",
     "descriptastorus",
     "sentencepiece",
