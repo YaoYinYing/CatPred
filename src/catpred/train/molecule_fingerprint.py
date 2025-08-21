@@ -115,7 +115,7 @@ def molecule_fingerprint(args: FingerprintArgs,
     print(f'Encoding smiles into a fingerprint vector from {len(args.checkpoint_paths)} models.')
 
     for index, checkpoint_path in enumerate(tqdm(args.checkpoint_paths, total=len(args.checkpoint_paths))):
-        model = load_checkpoint(checkpoint_path, device=args.device)
+        model = load_checkpoint(checkpoint_path, device=args.torch_device)
         scaler, features_scaler, atom_descriptor_scaler, bond_descriptor_scaler, atom_bond_scaler = load_scalers(args.checkpoint_paths[index])
 
         # Normalize features

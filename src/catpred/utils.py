@@ -118,7 +118,7 @@ def load_checkpoint(
     loaded_state_dict = state["state_dict"]
 
     if device is not None:
-        args.device = device
+        args.torch_device = device
 
     # Build model
     model = MoleculeModel(args)
@@ -155,13 +155,12 @@ def load_checkpoint(
     model_state_dict.update(pretrained_state_dict)
     model.load_state_dict(model_state_dict)
 
-    if args.cuda:
-        debug("Moving model to cuda")
-    model = model.to(args.device)
+    if args.device != 'cpu':
+        debug(f"Moving model to {args.device}")
+    model = model.to(args.torch_device)
 
     return model
 
-import ipdb
 
 def overwrite_state_dict(
     loaded_param_name: str,

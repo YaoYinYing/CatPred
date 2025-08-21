@@ -15,7 +15,6 @@ from rdkit import Chem
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
-import ipdb
 
 from catpred.data.esm_utils import get_protein_embedder, get_coords
 from catpred.data.data import MoleculeDatapoint, MoleculeDataset, make_mols

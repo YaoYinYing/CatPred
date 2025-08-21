@@ -33,7 +33,7 @@ class MPNEncoder(nn.Module):
         self.depth = depth or args.depth
         self.layers_per_message = 1
         self.undirected = args.undirected
-        self.device = args.device
+        self.device = args.torch_device
         self.aggregation = args.aggregation
         self.aggregation_norm = args.aggregation_norm
         self.is_atom_bond_targets = args.is_atom_bond_targets
@@ -220,7 +220,7 @@ class MPN(nn.Module):
                                                     is_reaction=self.reaction if self.reaction is not False else self.reaction_solvent)
         self.features_only = args.features_only
         self.use_input_features = args.use_input_features
-        self.device = args.device
+        self.device = args.torch_device
         self.atom_descriptors = args.atom_descriptors
         self.bond_descriptors = args.bond_descriptors
         self.overwrite_default_atom_features = args.overwrite_default_atom_features

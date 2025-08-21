@@ -297,7 +297,6 @@ def map_reac_to_prod(mol_reac: Chem.Mol, mol_prod: Chem.Mol):
             only_reac_ids.append(atom.GetIdx())
     return reac_id_to_prod_id, only_prod_ids, only_reac_ids
 
-import ipdb
 
 class MolGraph:
     """

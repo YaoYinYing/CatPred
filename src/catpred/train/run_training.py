@@ -265,9 +265,9 @@ def run_training(args: TrainArgs,
         else:
             debug(f'Number of parameters = {param_count_all(model):,}')
 
-        if args.cuda:
-            debug('Moving model to cuda')
-        model = model.to(args.device)
+        if args.device != 'cpu':
+            debug(f'Moving model to {args.device}')
+        model = model.to(args.torch_device)
 
         # Ensure that model is saved in correct location for evaluation if 0 epochs
         save_checkpoint(os.path.join(save_dir, MODEL_FILE_NAME), model, scaler,
@@ -332,7 +332,7 @@ def run_training(args: TrainArgs,
 
         # Evaluate on test set using model with best validation score
         info(f'Model {model_idx} best validation {args.metric} = {best_score:.6f} on epoch {best_epoch}')
-        model = load_checkpoint(os.path.join(save_dir, MODEL_FILE_NAME), device=args.device, logger=logger)
+        model = load_checkpoint(os.path.join(save_dir, MODEL_FILE_NAME), device=args.torch_device, logger=logger)
 
         if empty_test_set:
             info(f'Model {model_idx} provided with no test set, no metric evaluation will be performed.')

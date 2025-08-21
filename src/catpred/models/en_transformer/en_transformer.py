@@ -2,7 +2,6 @@
 https://github.com/Graylab/MaskedProteinEnT/blob/main/src/model/en_transformer/en_transformer.py
 '''
 
-import ipdb
 import torch
 import torch.nn.functional as F
 from torch import nn, einsum

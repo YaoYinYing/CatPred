@@ -28,6 +28,15 @@ dependencies = [
     "typed-argument-parser",
     "rdkit",
     "scipy",
+    "packaging",
+    "typing-extensions",
+    "rotary-embedding-torch",
+    "einops",
+    "fair-esm",
+    "descriptastorus",
+    "torch-geometric",
+    "torch-scatter",
+    "torch-cluster",
 ]
 
 [project.optional-dependencies]

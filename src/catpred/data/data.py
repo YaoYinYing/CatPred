@@ -49,7 +49,6 @@ def set_cache_mol(cache_mol: bool) -> None:
     global CACHE_MOL
     CACHE_MOL = cache_mol
 
-import ipdb
 
 class MoleculeDatapoint:
     """A :class:`MoleculeDatapoint` contains a single molecule and its associated features and targets."""

@@ -22,7 +22,6 @@ dependencies:
   - pyg
   - kimlab::stride
   - pip:
-    - ipdb
     - fair-esm
     - progres
     - rdkit-pypi

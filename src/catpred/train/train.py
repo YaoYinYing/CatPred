@@ -81,7 +81,7 @@ def train(
                     mean, std = atom_bond_scaler.means[ind][0], atom_bond_scaler.stds[ind][0]
                     for j, natom in enumerate(natoms):
                         constraints_batch[ind][j] = (constraints_batch[ind][j] - natom * mean) / std
-                    constraints_batch[ind] = torch.tensor(constraints_batch[ind]).to(args.device)
+                    constraints_batch[ind] = torch.tensor(constraints_batch[ind]).to(args.torch_device)
                 ind += 1
             for i in range(len(args.bond_targets)):
                 if not args.bond_constraints[i]:
@@ -90,7 +90,7 @@ def train(
                     mean, std = atom_bond_scaler.means[ind][0], atom_bond_scaler.stds[ind][0]
                     for j, nbond in enumerate(nbonds):
                         constraints_batch[ind][j] = (constraints_batch[ind][j] - nbond * mean) / std
-                    constraints_batch[ind] = torch.tensor(constraints_batch[ind]).to(args.device)
+                    constraints_batch[ind] = torch.tensor(constraints_batch[ind]).to(args.torch_device)
                 ind += 1
             bond_types_batch = []
             for i in range(len(args.atom_targets)):
@@ -99,7 +99,7 @@ def train(
                 if args.adding_bond_types and atom_bond_scaler is not None:
                     mean, std = atom_bond_scaler.means[i+len(args.atom_targets)][0], atom_bond_scaler.stds[i+len(args.atom_targets)][0]
                     bond_types = [(b.GetBondTypeAsDouble() - mean) / std for d in batch for b in d.mol[0].GetBonds()]
-                    bond_types = torch.FloatTensor(bond_types).to(args.device)
+                    bond_types = torch.FloatTensor(bond_types).to(args.torch_device)
                     bond_types_batch.append(bond_types)
                 else:
                     bond_types_batch.append(None)
@@ -137,7 +137,7 @@ def train(
         )
 
         # Move tensors to correct device
-        torch_device = args.device
+        torch_device = args.torch_device
         if model.is_atom_bond_targets:
             masks = [x.to(torch_device) for x in masks]
             masks = [x.reshape([-1, 1]) for x in masks]

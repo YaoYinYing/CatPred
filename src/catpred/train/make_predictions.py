@@ -38,7 +38,7 @@ def load_model(args: PredictArgs, generator: bool = False):
     
     # Load model and scalers
     models = (
-        load_checkpoint(checkpoint_path, pretrained_egnn_feats_path = pretrained_egnn_feats_path, device=args.device) for checkpoint_path in args.checkpoint_paths
+        load_checkpoint(checkpoint_path, pretrained_egnn_feats_path = pretrained_egnn_feats_path, device=args.torch_device) for checkpoint_path in args.checkpoint_paths
     )
     scalers = (
         load_scalers(checkpoint_path) for checkpoint_path in args.checkpoint_paths

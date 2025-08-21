@@ -20,32 +20,22 @@ def to_device(t, *, device):
 def cast_tuple(t):
     return (t,) if not isinstance(t, tuple) else t
 
-PROTEIN_EMBED_USE_CPU = os.getenv('PROTEIN_EMBED_USE_CPU', None) is not None
-
-if PROTEIN_EMBED_USE_CPU:
-    print('calculating protein embed only on cpu')
-
-# global variables
-
 GLOBAL_VARIABLES = {
     'model': None,
     'tokenizer': None
 }
 
-# general helper functions
-import ipdb
 
-def calc_protein_representations_with_subunits(proteins, get_repr_fn, *, device):
+def calc_protein_representations_with_subunits(proteins, get_repr_fn, *, device: torch.device):
     representations = []
     for subunits in proteins:
         subunits = cast_tuple(subunits)
         try:
             subunits_representations = list(map(get_repr_fn, subunits))
         except RuntimeError as e:
-            if 'out of memory' in str(e):
+            if 'out of memory' in str(e) and device.type == 'cuda':
                 print('| WARNING: ran out of memory, retrying batch')
                 torch.cuda.empty_cache()
-                # ipdb.set_trace()
                 subunits_representations = list(map(get_repr_fn, subunits))
             else:
                 raise e
@@ -54,10 +44,8 @@ def calc_protein_representations_with_subunits(proteins, get_repr_fn, *, device)
         representations.append(subunits_representations)
 
     lengths = [seq_repr.shape[0] for seq_repr in representations]
-    masks = torch.arange(max(lengths), device = device)[None, :] <  torch.tensor(lengths, device = device)[:, None]
-    
-    padded_representations = pad_sequence(representations, batch_first = True)
-
+    masks = torch.arange(max(lengths), device=device)[None, :] < torch.tensor(lengths, device=device)[:, None]
+    padded_representations = pad_sequence(representations, batch_first=True)
     return padded_representations.to(device), masks.to(device)
 
 # esm related functions
@@ -102,7 +90,6 @@ INT_TO_AA_STR_MAP = {
 }
 AA_STR_TO_INT_MAP = {v:k for k,v in INT_TO_AA_STR_MAP.items()}
 
-import ipdb
 
 def tensor_to_aa_str(t):
     str_seqs = []
@@ -113,27 +100,23 @@ def tensor_to_aa_str(t):
     return str_seqs
 
 @run_once('init_esm')
-def init_esm():
+def init_esm(device: torch.device) -> None:
     model, alphabet = esm.pretrained.esm2_t33_650M_UR50D()
     batch_converter = alphabet.get_batch_converter()
-
-    if not PROTEIN_EMBED_USE_CPU:
-        model = model.cuda()
-
+    model = model.to(device)
     GLOBAL_VARIABLES['model'] = (model, batch_converter)
 
+
 @run_once('init_esm_if')
-def init_esm_if():
+def init_esm_if(device: torch.device) -> None:
     model, alphabet = esm.pretrained.esm_if1_gvp4_t16_142M_UR50()
     batch_converter = esm_if.util.CoordBatchConverter(alphabet, 2048)
-
-    if not PROTEIN_EMBED_USE_CPU:
-        model = model.cuda()
-
+    model = model.to(device)
     GLOBAL_VARIABLES['esmif_model'] = (model, batch_converter)
 
-def get_single_esm_repr(protein_str):
-    init_esm()
+
+def get_single_esm_repr(protein_str, device: torch.device):
+    init_esm(device)
     model, batch_converter = GLOBAL_VARIABLES['model']
 
     data = [('protein', protein_str)]
@@ -144,8 +127,7 @@ def get_single_esm_repr(protein_str):
 
     batch_tokens = batch_tokens[:, :ESM_MAX_LENGTH]
 
-    if not PROTEIN_EMBED_USE_CPU:
-        batch_tokens = batch_tokens.cuda()
+    batch_tokens = batch_tokens.to(device)
 
     with torch.no_grad():
         results = model(batch_tokens, repr_layers=[33])
@@ -154,13 +136,13 @@ def get_single_esm_repr(protein_str):
     representation = token_representations[0][1 : len(protein_str) + 1]
     return representation
 
-def get_esm_repr(proteins, name, device):
+def get_esm_repr(proteins, name, device: torch.device):
     if isinstance(proteins, torch.Tensor):
         proteins = tensor_to_aa_str(proteins)
-    
-    get_protein_repr_fn = cache_fn(get_single_esm_repr, path = 'esm/proteins', name = name)
 
-    return calc_protein_representations_with_subunits([proteins], get_protein_repr_fn, device = device)
+    get_protein_repr_fn = cache_fn(lambda p: get_single_esm_repr(p, device), path='esm/proteins', name=name)
+
+    return calc_protein_representations_with_subunits([proteins], get_protein_repr_fn, device=device)
 
 def get_coords(pdbpath):
     #init_esm_if()
@@ -169,11 +151,11 @@ def get_coords(pdbpath):
     coords = esm_if.util.load_coords(addpath+pdbpath, 'A')
     return coords
     
-def get_esm_tokens(protein_str, device):
+def get_esm_tokens(protein_str, device: torch.device):
     if isinstance(protein_str, torch.Tensor):
         proteins = tensor_to_aa_str(proteins)
-    
-    init_esm()
+
+    init_esm(device)
     model, batch_converter = GLOBAL_VARIABLES['model']
 
     data = [('protein', protein_str)]
@@ -183,11 +165,7 @@ def get_esm_tokens(protein_str, device):
         print(f'warning max length protein esm')
 
     batch_tokens = batch_tokens[:, :ESM_MAX_LENGTH]
-
-    if device!='cpu':
-        batch_tokens = batch_tokens.cuda()
-
-    return batch_tokens
+    return batch_tokens.to(device)
 
 # factory functions
 

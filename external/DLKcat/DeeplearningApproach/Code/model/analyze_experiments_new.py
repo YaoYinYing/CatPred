@@ -4,7 +4,6 @@ import re
 import numpy as np
 from scipy import stats
 import csv
-import ipdb
 
 
 def parse_log_file(file_path):

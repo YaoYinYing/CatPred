@@ -77,10 +77,10 @@ class CommonArgs(Tap):
     """Path to model checkpoint (:code:`.pt` file)."""
     checkpoint_paths: List[str] = None
     """List of paths to model checkpoints (:code:`.pt` files)."""
-    no_cuda: bool = False
-    """Turn off cuda (i.e., use CPU instead of GPU)."""
-    gpu: int = None
-    """Which GPU to use."""
+    device: Literal['cpu', 'cuda', 'mps'] = 'cpu'
+    """Device to use for computation."""
+    gpu: int = 0
+    """Which GPU to use when :code:`device` is "cuda"."""
     features_generator: List[str] = None
     """Method(s) of generating additional features."""
     features_path: List[str] = None
@@ -136,26 +136,16 @@ class CommonArgs(Tap):
         self._bond_constraints = []
 
     @property
-    def device(self) -> torch.device:
-        """The :code:`torch.device` on which to load and process data and models."""
-        if not self.cuda:
-            return torch.device('cpu')
+    def torch_device(self) -> torch.device:
+        """The :class:`torch.device` for loading data and models."""
+        if self.device == 'cuda':
+            return torch.device('cuda', self.gpu)
+        return torch.device(self.device)
 
-        return torch.device('cuda', self.gpu)
-
-    @device.setter
-    def device(self, device: torch.device) -> None:
-        self.cuda = device.type == 'cuda'
-        self.gpu = device.index
-
-    @property
-    def cuda(self) -> bool:
-        """Whether to use CUDA (i.e., GPUs) or not."""
-        return not self.no_cuda and torch.cuda.is_available()
-
-    @cuda.setter
-    def cuda(self, cuda: bool) -> None:
-        self.no_cuda = not cuda
+    @torch_device.setter
+    def torch_device(self, dev: torch.device) -> None:
+        self.device = dev.type
+        self.gpu = dev.index or 0
 
     @property
     def features_scaling(self) -> bool:
@@ -207,6 +197,7 @@ class CommonArgs(Tap):
 
     def configure(self) -> None:
         self.add_argument('--gpu', choices=list(range(torch.cuda.device_count())))
+        self.add_argument('--device', choices=['cpu', 'cuda', 'mps'])
         self.add_argument('--features_generator', choices=get_available_features_generators())
 
     def process_args(self) -> None:
@@ -243,6 +234,13 @@ class CommonArgs(Tap):
 
         if self.empty_cache:
             empty_cache()
+
+        if self.device == 'cuda' and not torch.cuda.is_available():
+            warn('CUDA requested but not available, using CPU.')
+            self.device = 'cpu'
+        if self.device == 'mps' and not torch.backends.mps.is_available():
+            warn('MPS requested but not available, using CPU.')
+            self.device = 'cpu'
 
 
 class TrainArgs(CommonArgs):

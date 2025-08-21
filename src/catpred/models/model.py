@@ -13,13 +13,11 @@ from catpred.nn_utils import initialize_weights
 from torch.nn.utils.rnn import pad_sequence
 
 from collections import OrderedDict
-import ipdb
 import os
 
 import torch
 import torch.nn as nn
 
-import ipdb
 import torch
 from torch import nn
 from torch import einsum
@@ -64,7 +62,7 @@ class MoleculeModel(nn.Module):
         self.multiclass = args.dataset_type == "multiclass"
         self.loss_function = args.loss_function
         self.args = args
-        self.device = args.device
+        self.device = args.torch_device
 
         if hasattr(args, "train_class_sizes"):
             self.train_class_sizes = args.train_class_sizes

@@ -6,7 +6,6 @@ from tqdm import tqdm
 from concurrent.futures import ProcessPoolExecutor
 from collections import defaultdict
 from sklearn.metrics import r2_score, mean_absolute_error
-import ipdb
 import csv
 
 OUTPUT_DIR="../results/reproduce_results"

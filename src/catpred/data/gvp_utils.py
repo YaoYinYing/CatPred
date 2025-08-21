@@ -6,7 +6,6 @@ import torch.utils.data as data
 import torch.nn.functional as F
 import torch_geometric
 import torch_cluster
-import ipdb
 
 def _normalize(tensor, dim=-1):
     '''
