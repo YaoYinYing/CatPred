@@ -37,6 +37,15 @@ dependencies = [
     "torch-geometric",
     "torch-scatter",
     "torch-cluster",
+    "progres",
+    "rdkit-pypi",
+    "transformers",
+    "descriptastorus",
+    "sentencepiece",
+    "seaborn",
+    "typed-argument-parser>=1.6.1",
+    "faiss-cpu",
+    "biotite",
 ]
 
 [project.optional-dependencies]
