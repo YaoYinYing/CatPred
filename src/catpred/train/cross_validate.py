@@ -13,9 +13,18 @@ import pandas as pd
 from catpred.train.run_training import run_training
 from catpred.args import TrainArgs
 from catpred.constants import TEST_SCORES_FILE_NAME, TRAIN_LOGGER_NAME
-from catpred.data import get_data, get_task_names, MoleculeDataset, validate_dataset_type
+from catpred.data.utils import get_data, get_task_names, validate_dataset_type
+from catpred.data.data import MoleculeDataset
 from catpred.utils import create_logger, makedirs, timeit, multitask_mean
-from catpred.features import set_extra_atom_fdim, set_extra_bond_fdim, set_explicit_h, set_adding_hs, set_keeping_atom_map, set_reaction, reset_featurization_parameters
+from catpred.features.featurization import (
+    set_extra_atom_fdim,
+    set_extra_bond_fdim,
+    set_explicit_h,
+    set_adding_hs,
+    set_keeping_atom_map,
+    set_reaction,
+    reset_featurization_parameters,
+)
 
 
 @timeit(logger_name=TRAIN_LOGGER_NAME)

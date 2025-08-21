@@ -20,7 +20,8 @@ from catpred.data.esm_utils import get_protein_embedder, get_coords
 from catpred.data.data import MoleculeDatapoint, MoleculeDataset, make_mols
 from catpred.data.scaffold import log_scaffold_stats, scaffold_split
 from catpred.args import PredictArgs, TrainArgs
-from catpred.features import load_features, load_valid_atom_or_bond_features, is_mol
+from catpred.features.utils import load_features, load_valid_atom_or_bond_features
+from catpred.features.featurization import is_mol
 from catpred.rdkit import make_mol
 
 # Increase maximum size of field in the csv processing for the current architecture

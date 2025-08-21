@@ -10,8 +10,9 @@ from torch.optim.lr_scheduler import _LRScheduler
 from tqdm import tqdm
 
 from catpred.args import TrainArgs
-from catpred.data import MoleculeDataLoader, MoleculeDataset, AtomBondScaler
-from catpred.models import MoleculeModel
+from catpred.data.data import MoleculeDataLoader, MoleculeDataset
+from catpred.data.scaler import AtomBondScaler
+from catpred.models.model import MoleculeModel
 from catpred.nn_utils import compute_gnorm, compute_pnorm, NoamLR
 
 

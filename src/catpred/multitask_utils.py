@@ -1,12 +1,14 @@
 from typing import List
 import numpy as np
+from typing import TYPE_CHECKING
 
-from catpred.data import MoleculeDataset
+if TYPE_CHECKING:  # pragma: no cover
+    from catpred.data.data import MoleculeDataset
 
 
 def reshape_values(
     values: List[List[List[float]]],
-    test_data: MoleculeDataset,
+    test_data: 'MoleculeDataset',
     natom_targets: int,
     nbond_targets: int,
     num_tasks: int,
@@ -42,7 +44,7 @@ def reshape_values(
 
 def reshape_individual_preds(
     individual_preds: List[List[List[List[float]]]],
-    test_data: MoleculeDataset,
+    test_data: 'MoleculeDataset',
     natom_targets: int,
     nbond_targets: int,
     num_tasks: int,

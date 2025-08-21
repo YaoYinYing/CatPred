@@ -8,9 +8,16 @@ from torch.utils.data import DataLoader, Dataset, Sampler
 from rdkit import Chem
 
 from catpred.data.scaler import StandardScaler, AtomBondScaler
-from catpred.features import get_features_generator
-from catpred.features import BatchMolGraph, MolGraph
-from catpred.features import is_explicit_h, is_reaction, is_adding_hs, is_mol, is_keeping_atom_map
+from catpred.features.features_generators import get_features_generator
+from catpred.features.featurization import (
+    BatchMolGraph,
+    MolGraph,
+    is_explicit_h,
+    is_reaction,
+    is_adding_hs,
+    is_mol,
+    is_keeping_atom_map,
+)
 from catpred.rdkit import make_mol
 
 # Cache of graph featurizations

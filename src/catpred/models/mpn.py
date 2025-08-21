@@ -7,7 +7,12 @@ import torch
 import torch.nn as nn
 
 from catpred.args import TrainArgs
-from catpred.features import BatchMolGraph, get_atom_fdim, get_bond_fdim, mol2graph
+from catpred.features.featurization import (
+    BatchMolGraph,
+    get_atom_fdim,
+    get_bond_fdim,
+    mol2graph,
+)
 from catpred.nn_utils import index_select_ND, get_activation_function
 
 

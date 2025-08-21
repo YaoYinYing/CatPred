@@ -5,11 +5,37 @@ from typing import List, Optional, Union, Tuple
 import numpy as np
 
 from catpred.args import PredictArgs, TrainArgs
-from catpred.data import get_data, get_data_from_smiles, MoleculeDataLoader, MoleculeDataset, StandardScaler, AtomBondScaler
-from catpred.utils import load_args, load_checkpoint, load_scalers, makedirs, timeit, update_prediction_args
-from catpred.features import set_extra_atom_fdim, set_extra_bond_fdim, set_reaction, set_explicit_h, set_adding_hs, set_keeping_atom_map, reset_featurization_parameters
-from catpred.models import MoleculeModel
-from catpred.uncertainty import UncertaintyCalibrator, build_uncertainty_calibrator, UncertaintyEstimator, build_uncertainty_evaluator
+from catpred.data.data import (
+    get_data,
+    get_data_from_smiles,
+    MoleculeDataLoader,
+    MoleculeDataset,
+)
+from catpred.data.scaler import StandardScaler, AtomBondScaler
+from catpred.utils import (
+    load_args,
+    load_checkpoint,
+    load_scalers,
+    makedirs,
+    timeit,
+    update_prediction_args,
+)
+from catpred.features.featurization import (
+    set_extra_atom_fdim,
+    set_extra_bond_fdim,
+    set_reaction,
+    set_explicit_h,
+    set_adding_hs,
+    set_keeping_atom_map,
+    reset_featurization_parameters,
+)
+from catpred.models.model import MoleculeModel
+from catpred.uncertainty.uncertainty_calibrator import (
+    build_uncertainty_calibrator,
+    UncertaintyCalibrator,
+)
+from catpred.uncertainty.uncertainty_estimator import UncertaintyEstimator
+from catpred.uncertainty.uncertainty_evaluator import build_uncertainty_evaluator
 from catpred.multitask_utils import reshape_values
 
 

@@ -18,8 +18,9 @@ from catpred.train.train import train
 from catpred.train.loss_functions import get_loss_func
 from catpred.args import TrainArgs
 from catpred.constants import MODEL_FILE_NAME
-from catpred.data import get_class_sizes, get_data, MoleculeDataLoader, MoleculeDataset, set_cache_graph, split_data
-from catpred.models import MoleculeModel
+from catpred.data.data import MoleculeDataLoader, MoleculeDataset, set_cache_graph
+from catpred.data.utils import get_class_sizes, get_data, split_data
+from catpred.models.model import MoleculeModel
 from catpred.nn_utils import param_count, param_count_all
 from catpred.utils import build_optimizer, build_lr_scheduler, load_checkpoint, makedirs, \
     save_checkpoint, save_smiles_splits, load_frzn_model, multitask_mean

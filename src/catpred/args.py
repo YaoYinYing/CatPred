@@ -13,8 +13,8 @@ from tap import Tap  # pip install typed-argument-parser (https://github.com/swa
 import numpy as np
 
 import catpred.data.utils
-from catpred.data import set_cache_mol, empty_cache
-from catpred.features import get_available_features_generators
+from catpred.data.data import set_cache_mol, empty_cache
+from catpred.features.features_generators import get_available_features_generators
 
 
 Metric = Literal['auc', 'prc-auc', 'rmse', 'mae', 'mse', 'r2', 'accuracy', 'cross_entropy', 'binary_cross_entropy', 'sid', 'wasserstein', 'f1', 'mcc', 'bounded_rmse', 'bounded_mae', 'bounded_mse']

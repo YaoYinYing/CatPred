@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from argparse import Namespace
 import csv
 from datetime import timedelta
@@ -10,19 +12,39 @@ from time import time
 from typing import Any, Callable, List, Tuple
 import collections
 
-import torch
-import torch.nn as nn
-import numpy as np
-from torch.optim import Adam, Optimizer
-from torch.optim.lr_scheduler import _LRScheduler
-from tqdm import tqdm
-from scipy.stats.mstats import gmean
+try:  # Optional heavy dependencies
+    import torch
+    import torch.nn as nn
+    import numpy as np
+    from torch.optim import Adam, Optimizer
+    from torch.optim.lr_scheduler import _LRScheduler
+    from tqdm import tqdm
+    from scipy.stats.mstats import gmean
+except Exception:  # pragma: no cover - allow lightweight use
+    torch = None
+    nn = None
+    np = None
+    Adam = Optimizer = _LRScheduler = None
+    tqdm = None
 
-from catpred.args import PredictArgs, TrainArgs, FingerprintArgs
-from catpred.data import StandardScaler, AtomBondScaler, MoleculeDataset, preprocess_smiles_columns, get_task_names
-from catpred.models import MoleculeModel
-from catpred.nn_utils import NoamLR
-from catpred.models.ffn import MultiReadout
+    def gmean(*args, **kwargs):  # type: ignore
+        raise RuntimeError("scipy is required for this function")
+
+try:  # Internal modules may rely on optional deps
+    from catpred.args import PredictArgs, TrainArgs, FingerprintArgs
+    from catpred.data.scaler import StandardScaler, AtomBondScaler
+    from catpred.data.data import MoleculeDataset
+    from catpred.data.utils import preprocess_smiles_columns, get_task_names
+    from catpred.models.model import MoleculeModel
+    from catpred.nn_utils import NoamLR
+    from catpred.models.ffn import MultiReadout
+except Exception:  # pragma: no cover
+    PredictArgs = TrainArgs = FingerprintArgs = None  # type: ignore
+    StandardScaler = AtomBondScaler = MoleculeDataset = None  # type: ignore
+    preprocess_smiles_columns = get_task_names = None  # type: ignore
+    MoleculeModel = None  # type: ignore
+    NoamLR = None  # type: ignore
+    MultiReadout = None  # type: ignore
 
 
 def makedirs(path: str, isfile: bool = False) -> None:

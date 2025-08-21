@@ -1,9 +1,9 @@
 import numpy as np
 from typing import Iterator, List
 
-from catpred.data import MoleculeDataset, StandardScaler
-from catpred.data.data import MoleculeDataLoader
-from catpred.models import MoleculeModel
+from catpred.data.data import MoleculeDataset, MoleculeDataLoader
+from catpred.data.scaler import StandardScaler
+from catpred.models.model import MoleculeModel
 from catpred.uncertainty.uncertainty_calibrator import UncertaintyCalibrator
 from catpred.uncertainty.uncertainty_predictor import build_uncertainty_predictor
 

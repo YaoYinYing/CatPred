@@ -13,7 +13,7 @@ Note: Ensure that the catpred package is properly installed and configured
 before running this script.
 """
 
-from catpred.train import catpred_predict
+from catpred.train.make_predictions import catpred_predict
 
 def main():
     """
