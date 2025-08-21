@@ -2,15 +2,18 @@ from abc import ABC, abstractmethod
 from typing import Iterator, List
 
 import numpy as np
-from catpred.data.data import MoleculeDataLoader
+from catpred.data.data import MoleculeDataLoader, MoleculeDataset
 from scipy.special import erfinv, softmax, logit, expit
 from scipy.optimize import fmin
 from scipy.stats import t
 from sklearn.isotonic import IsotonicRegression
 
-from catpred.data import MoleculeDataset, StandardScaler
-from catpred.models import MoleculeModel
-from catpred.uncertainty.uncertainty_predictor import build_uncertainty_predictor, UncertaintyPredictor
+from catpred.data.scaler import StandardScaler
+from catpred.models.model import MoleculeModel
+from catpred.uncertainty.uncertainty_predictor import (
+    build_uncertainty_predictor,
+    UncertaintyPredictor,
+)
 from catpred.multitask_utils import reshape_values
 
 

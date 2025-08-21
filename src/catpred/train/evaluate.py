@@ -5,9 +5,10 @@ from typing import Dict, List
 import numpy as np
 
 from catpred.train.predict import predict
-from catpred.data import MoleculeDataLoader, StandardScaler, AtomBondScaler
-from catpred.models import MoleculeModel
-from catpred.train import get_metric_func
+from catpred.data.data import MoleculeDataLoader
+from catpred.data.scaler import StandardScaler, AtomBondScaler
+from catpred.models.model import MoleculeModel
+from catpred.train.metrics import get_metric_func
 
 
 def evaluate_predictions(preds: List[List[float]],

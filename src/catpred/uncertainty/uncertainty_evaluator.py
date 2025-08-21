@@ -6,7 +6,7 @@ from scipy.stats import t, spearmanr
 from scipy.special import erfinv
 
 from catpred.uncertainty.uncertainty_calibrator import UncertaintyCalibrator
-from catpred.train import evaluate_predictions
+from catpred.train.evaluate import evaluate_predictions
 
 
 class UncertaintyEvaluator(ABC):

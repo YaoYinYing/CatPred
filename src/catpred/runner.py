@@ -6,8 +6,24 @@ import json
 from pathlib import Path
 from typing import Any, Mapping, Optional, Sequence, List, Tuple
 
-from catpred.args import PredictArgs
-from catpred.train.make_predictions import make_predictions, load_model
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:  # pragma: no cover - typing helpers
+    from catpred.args import PredictArgs  # noqa: F401
+
+
+def load_model(*args, **kwargs):
+    """Lazy loader for :func:`catpred.train.make_predictions.load_model`."""
+    from catpred.train.make_predictions import load_model as _load_model
+
+    return _load_model(*args, **kwargs)
+
+
+def make_predictions(*args, **kwargs):
+    """Lazy loader for :func:`catpred.train.make_predictions.make_predictions`."""
+    from catpred.train.make_predictions import make_predictions as _make_predictions
+
+    return _make_predictions(*args, **kwargs)
 
 
 class InferenceRunner:
@@ -44,6 +60,15 @@ class InferenceRunner:
 
     def prepare(self) -> None:
         """Load model objects based on the current configuration."""
+        try:
+            from catpred.args import PredictArgs  # type: ignore
+        except Exception:  # pragma: no cover - lightweight fallback
+            class PredictArgs(dict):
+                """Minimal stand-in used when full dependencies are unavailable."""
+
+                def __init__(self, **kwargs):
+                    self.__dict__.update(kwargs)
+
         args = PredictArgs(**self.config)
         self._model_objects = load_model(args, generator=False)
 

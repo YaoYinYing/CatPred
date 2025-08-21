@@ -8,7 +8,7 @@ import torch.nn as nn
 from catpred.models.mpn import MPN
 from catpred.models.ffn import build_ffn, MultiReadout
 from catpred.args import TrainArgs
-from catpred.features import BatchMolGraph
+from catpred.features.featurization import BatchMolGraph
 from catpred.nn_utils import initialize_weights
 from torch.nn.utils.rnn import pad_sequence
 

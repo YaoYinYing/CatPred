@@ -6,11 +6,18 @@ import numpy as np
 from tqdm import tqdm
 
 from catpred.args import FingerprintArgs, TrainArgs
-from catpred.data import get_data, get_data_from_smiles, MoleculeDataLoader, MoleculeDataset
+from catpred.data.data import get_data, get_data_from_smiles, MoleculeDataLoader, MoleculeDataset
 from catpred.utils import load_args, load_checkpoint, makedirs, timeit, load_scalers, update_prediction_args
-from catpred.data import MoleculeDataLoader, MoleculeDataset
-from catpred.features import set_reaction, set_explicit_h, set_adding_hs, set_keeping_atom_map, reset_featurization_parameters, set_extra_atom_fdim, set_extra_bond_fdim
-from catpred.models import MoleculeModel
+from catpred.features.featurization import (
+    set_reaction,
+    set_explicit_h,
+    set_adding_hs,
+    set_keeping_atom_map,
+    reset_featurization_parameters,
+    set_extra_atom_fdim,
+    set_extra_bond_fdim,
+)
+from catpred.models.model import MoleculeModel
 
 @timeit()
 def molecule_fingerprint(args: FingerprintArgs,

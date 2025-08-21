@@ -4,8 +4,9 @@ from typing import Iterator, List
 import numpy as np
 from tqdm import tqdm
 
-from catpred.data import MoleculeDataset, StandardScaler, MoleculeDataLoader
-from catpred.models import MoleculeModel
+from catpred.data.data import MoleculeDataset, MoleculeDataLoader
+from catpred.data.scaler import StandardScaler
+from catpred.models.model import MoleculeModel
 from catpred.train.predict import predict
 from catpred.multitask_utils import reshape_values, reshape_individual_preds
 

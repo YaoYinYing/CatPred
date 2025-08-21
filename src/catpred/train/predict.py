@@ -4,8 +4,9 @@ import numpy as np
 import torch
 from tqdm import tqdm
 
-from catpred.data import MoleculeDataLoader, MoleculeDataset, StandardScaler, AtomBondScaler
-from catpred.models import MoleculeModel
+from catpred.data.data import MoleculeDataLoader, MoleculeDataset
+from catpred.data.scaler import StandardScaler, AtomBondScaler
+from catpred.models.model import MoleculeModel
 from catpred.nn_utils import activate_dropout
 
 
